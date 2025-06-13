@@ -9,7 +9,7 @@ param twilioFromNumber string
 
 var resourceToken = toLower(replace('${environmentName}', '_', ''))
 
-resource storage 'Microsoft.Storage/storageAccounts@2023-07-01' = {
+resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: 'st${resourceToken}${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
@@ -57,7 +57,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-07-01' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-01-01-preview' = {
   name: 'ehns-${resourceToken}${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
@@ -70,7 +70,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-07-01' = {
   }
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-07-01' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-01-01-preview' = {
   parent: eventHubNamespace
   name: 'orders-stream'
   properties: {
@@ -79,7 +79,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-07-01' = {
   }
 }
 
-resource eventHubAuthRule 'Microsoft.EventHub/namespaces/authorizationRules@2023-07-01' = {
+resource eventHubAuthRule 'Microsoft.EventHub/namespaces/authorizationRules@2023-01-01-preview' = {
   name: '${eventHubNamespace.name}/RootManageSharedAccessKey'
   properties: {
     rights: [
@@ -112,7 +112,7 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
         }
         {
           name: 'EventHubConnectionString'
-          value: listKeys(eventHubAuthRule.id, '2023-07-01').primaryConnectionString
+          value: listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', eventHubNamespace.name, 'RootManageSharedAccessKey'), '2023-01-01-preview').primaryConnectionString
         }
         {
           name: 'TWILIO_ACCOUNT_SID'

@@ -2,9 +2,9 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "environmentName": { "value": "${AZURE_ENV_NAME}" },
-    "location": { "value": "${AZURE_LOCATION}" },
-    "resourceGroupName": { "value": "rg-${AZURE_ENV_NAME}" },
+    "environmentName": { "value": "test" },
+    "location": { "value": "northeurope" },
+    "resourceGroupName": { "value": "rg-test" },
     "twilioAccountSid": { "value": "<your-twilio-account-sid>" },
     "twilioAuthToken": { "value": "<your-twilio-auth-token>" },
     "twilioFromNumber": { "value": "<your-twilio-from-number>" }
