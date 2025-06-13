@@ -1,0 +1,18 @@
+name: myfunctionapp
+metadata:
+  template: azd-init@1.6.0
+services:
+  myfunction:
+    project: ./MyFunction/MyFunction
+    language: python
+    host: function
+    azure:
+      resourceGroup: rg-${AZURE_ENV_NAME}
+      location: ${AZURE_LOCATION}
+      environment: ${AZURE_ENV_NAME}
+      appName: func-${AZURE_ENV_NAME}
+      eventHub: orders-stream
+      storageAccount: st${AZURE_ENV_NAME}
+      keyVault: kv-${AZURE_ENV_NAME}
+      appInsights: appi-${AZURE_ENV_NAME}
+      logAnalytics: log-${AZURE_ENV_NAME}
