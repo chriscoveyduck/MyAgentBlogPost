@@ -101,7 +101,7 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
         }
         {
           name: 'EventHubConnectionString'
-          value: listKeys(eventHubNamespace.id, '2023-01-01-preview').primaryConnectionString
+          value: listKeys(eventHubNamespace.id, '2023-07-01').primaryConnectionString
         }
         {
           name: 'TWILIO_ACCOUNT_SID'
