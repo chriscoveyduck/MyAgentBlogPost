@@ -25,8 +25,9 @@ jobs:
         run: |
           npm install -g azure-functions-core-tools@4 --unsafe-perm true
 
-      - name: Set up Azure CLI
-        uses: azure/cli@v2
+      # Azure CLI is pre-installed on GitHub runners; no need for azure/cli@v2
+      - name: Check Azure CLI version
+        run: az --version
 
       - name: Log in to Azure
         uses: azure/login@v2
