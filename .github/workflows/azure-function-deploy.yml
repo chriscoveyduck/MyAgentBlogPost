@@ -39,6 +39,31 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r MyFunction/MyFunction/requirements.txt
 
+      - name: Ensure Function App exists
+        id: ensure-funcapp
+        run: |
+          set -e
+          # Check if the Function App exists
+          if az functionapp show --name "$AZURE_FUNCTIONAPP_NAME" --resource-group "$AZURE_RESOURCE_GROUP" 2>/dev/null; then
+            echo "Function App exists."
+          else
+            echo "Function App does not exist. Creating..."
+            # Find the app service plan in the resource group
+            PLAN_NAME=$(az appservice plan list --resource-group "$AZURE_RESOURCE_GROUP" --query "[?kind=='functionapp'].name | [0]" -o tsv)
+            if [ -z "$PLAN_NAME" ]; then
+              echo "No app service plan found for function app. Exiting."
+              exit 1
+            fi
+            # Create the Function App
+            az functionapp create \
+              --name "$AZURE_FUNCTIONAPP_NAME" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --plan "$PLAN_NAME" \
+              --storage-account $(az storage account list --resource-group "$AZURE_RESOURCE_GROUP" --query "[0].name" -o tsv) \
+              --runtime python \
+              --functions-version 4
+          fi
+
       - name: Build Azure Function
         run: |
           cd MyFunction/MyFunction
