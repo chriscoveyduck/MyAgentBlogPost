@@ -9,7 +9,7 @@ param twilioFromNumber string
 
 var resourceToken = toLower(replace('${environmentName}', '_', ''))
 
-resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+resource storage 'Microsoft.Storage/storageAccounts@2023-07-01' = {
   name: 'st${resourceToken}${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
@@ -57,7 +57,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-01-01-preview' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-07-01' = {
   name: 'ehns-${resourceToken}${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
@@ -70,7 +70,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2023-01-01-preview' = 
   }
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-01-01-preview' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-07-01' = {
   parent: eventHubNamespace
   name: 'orders-stream'
   properties: {
