@@ -79,6 +79,17 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2023-07-01' = {
   }
 }
 
+resource eventHubAuthRule 'Microsoft.EventHub/namespaces/authorizationRules@2023-07-01' = {
+  name: '${eventHubNamespace.name}/RootManageSharedAccessKey'
+  properties: {
+    rights: [
+      'Listen'
+      'Send'
+      'Manage'
+    ]
+  }
+}
+
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: 'func-${resourceToken}${uniqueString(resourceGroup().id)}'
   location: location
@@ -101,7 +112,7 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
         }
         {
           name: 'EventHubConnectionString'
-          value: listKeys(eventHubNamespace.id, '2023-07-01').primaryConnectionString
+          value: listKeys(eventHubAuthRule.id, '2023-07-01').primaryConnectionString
         }
         {
           name: 'TWILIO_ACCOUNT_SID'
